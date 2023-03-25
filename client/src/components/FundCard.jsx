@@ -3,7 +3,7 @@ import React from 'react';
 import { tagType, thirdweb } from '../assets';
 import { daysLeft } from '../utils';
 
-const FundCard = ({ owner, title, description, target, deadline, amountCollected, image, handleClick }) => {
+const FundCard = ({ owner, title, description, coupoun1,coupoun2 ,coupoun3,target, deadline, amountCollected, image, handleClick }) => {
   const remainingDays = daysLeft(deadline);
   
   return (
@@ -19,6 +19,13 @@ const FundCard = ({ owner, title, description, target, deadline, amountCollected
         <div className="block">
           <h3 className="font-epilogue font-semibold text-[16px] text-white text-left leading-[26px] truncate">{title}</h3>
           <p className="mt-[5px] font-epilogue font-normal text-[#808191] text-left leading-[18px] truncate">{description}</p>
+        </div>
+
+        <div className="block">
+          <h3 className="font-epilogue font-semibold text-[16px] text-white text-left leading-[26px] truncate">Coupon</h3>
+          <p className="mt-[5px] font-epilogue font-normal text-[#808191] text-left leading-[18px] truncate">{coupoun1}</p>
+          <p className="mt-[5px] font-epilogue font-normal text-[#808191] text-left leading-[18px] truncate">{coupoun2}</p>
+          <p className="mt-[5px] font-epilogue font-normal text-[#808191] text-left leading-[18px] truncate">{coupoun3}</p>
         </div>
 
         <div className="flex justify-between flex-wrap mt-[15px] gap-2">
