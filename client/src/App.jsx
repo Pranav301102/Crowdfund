@@ -3,6 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 
 import { Sidebar, Navbar } from './components';
 import { CampaignDetails, CreateCampaign, Home, Profile } from './pages';
+import DisplayCoupoun from './pages/DisplayCoupoun';
 
 const App = () => {
   return (
@@ -18,6 +19,7 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/create-campaign" element={<CreateCampaign />} />
+          <Route path="/withdraw" element={<DisplayCoupoun/>}/>
           <Route path="/campaign-details/:id" element={<CampaignDetails />} />
         </Routes>
       </div>
