@@ -12,15 +12,14 @@ export const navlinks = [
     link: '/create-campaign',
   },
   {
-    name: 'payment',
+    name: 'create-coupon',
     imgUrl: payment,
-    link: '/',
-    disabled: true,
+    link: '/create-coupon',
   },
   {
     name: 'withdraw',
     imgUrl: withdraw,
-    link: '/withdraw',
+    link: '/coupon',
   },
   {
     name: 'profile',

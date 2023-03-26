@@ -1,11 +1,32 @@
 import React from 'react';
-
+import { useStateContext } from '../context';
 import { tagType, thirdweb } from '../assets';
 import { daysLeft } from '../utils';
 
 const FundCard = ({ owner, title, description, coupoun1,coupoun2 ,coupoun3,target, deadline, amountCollected, image, handleClick }) => {
   const remainingDays = daysLeft(deadline);
-  
+  const { getCoupounById } = useStateContext();
+  const [coupon1, setCoupoun1] = React.useState([]);
+  const [coupon2, setCoupoun2] = React.useState([]);
+  const [coupon3, setCoupoun3] = React.useState([]);
+  const [isLoading, setIsLoading] = React.useState(false);
+
+
+
+  React.useEffect(() => {
+    const fetchCoupouns = async () => {
+      const data1 = await getCoupounById(coupoun1.toNumber());
+      const data2 = await getCoupounById(coupoun2.toNumber());
+      const data3 = await getCoupounById(coupoun3.toNumber());
+      setCoupoun1(data1);
+      setCoupoun2(data2);
+      setCoupoun3(data3);
+    }
+    setIsLoading(true);
+    fetchCoupouns();
+    console.log(coupon1, coupon2, coupon3);
+    setIsLoading(false);
+  }, [isLoading]);
   return (
     <div className="sm:w-[288px] w-full rounded-[15px] bg-[#1c1c24] cursor-pointer" onClick={handleClick}>
       <img src={image} alt="fund" className="w-full h-[158px] object-cover rounded-[15px]"/>
@@ -23,9 +44,9 @@ const FundCard = ({ owner, title, description, coupoun1,coupoun2 ,coupoun3,targe
 
         <div className="block">
           <h3 className="font-epilogue font-semibold text-[16px] text-white text-left leading-[26px] truncate">Coupon</h3>
-          <p className="mt-[5px] font-epilogue font-normal text-[#808191] text-left leading-[18px] truncate">{coupoun1}</p>
-          <p className="mt-[5px] font-epilogue font-normal text-[#808191] text-left leading-[18px] truncate">{coupoun2}</p>
-          <p className="mt-[5px] font-epilogue font-normal text-[#808191] text-left leading-[18px] truncate">{coupoun3}</p>
+          <p className="mt-[5px] font-epilogue font-normal text-[#808191] text-left leading-[18px] truncate">{coupon1.name}</p>
+          <p className="mt-[5px] font-epilogue font-normal text-[#808191] text-left leading-[18px] truncate">{coupon2.name}</p>
+          <p className="mt-[5px] font-epilogue font-normal text-[#808191] text-left leading-[18px] truncate">{coupon3.name}</p>
         </div>
 
         <div className="flex justify-between flex-wrap mt-[15px] gap-2">

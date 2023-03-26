@@ -7,7 +7,9 @@ import { loader } from '../assets';
 const DisplayCampaigns = ({ title, isLoading, campaigns }) => {
   const navigate = useNavigate();
   const handleNavigate = (campaign) => {
-    navigate(`/campaign-details/${campaign.title}`, { state: campaign })
+    const data = {'coupon' :[campaign.coupoun1.toNumber(), campaign.coupoun2.toNumber(), campaign.coupoun3.toNumber()],campaign};
+    console.log(data);
+    navigate(`/campaign-details/${campaign.title}`, { state: data })
   }
   
   return (

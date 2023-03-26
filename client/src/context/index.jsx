@@ -7,8 +7,9 @@ import { EditionMetadataWithOwnerOutputSchema } from '@thirdweb-dev/sdk';
 const StateContext = createContext();
 
 export const StateContextProvider = ({ children }) => {
-  const { contract } = useContract('0xB815f45Be3C63074002E31467FD6f6306b38E851');
+  const { contract } = useContract('0x00828CAFF173ECe2c0ab56078799449Cb49e8E42');
   const { mutateAsync: createCampaign } = useContractWrite(contract, 'createCampaign');
+  const { mutateAsync: createCoupoun } = useContractWrite(contract, 'createCoupoun');
 
   const address = useAddress();
   const connect = useMetamask();
@@ -32,6 +33,67 @@ export const StateContextProvider = ({ children }) => {
       console.log("contract call failure", error)
     }
   }
+
+  const publishCoupon = async (form) => {
+    try {
+      const data = await createCoupoun([
+        address, // owner
+        form.name, // title
+        form.description, // description
+        new Date(form.deadline).getTime(), // deadline,
+      ])
+
+      return data;
+    } catch (error) {
+      console.log("contract call failure", error)
+    }
+
+  }
+
+  const getCoupounsByOwner = async () => {
+    const coupouns = await contract.call('getCoupounsByOwner', address);
+    const parsedCoupouns = coupouns.map((coupoun, i) => ({
+      owner: coupoun.owner,
+      name: coupoun.name,
+      description: coupoun.description,
+      deadline: coupoun.deadline.toNumber(),
+      pId: i,
+    }));
+
+    return parsedCoupouns;
+  }
+
+  const getCoupounById = async (pId) => {
+    const coupoun = await contract.call('getCoupounById', pId);
+    const parsedCoupoun = {
+      owner: coupoun.owner,
+      name: coupoun.name,
+      description: coupoun.description,
+      deadline: coupoun.deadline.toNumber(),
+    };
+    
+    return parsedCoupoun;
+  }
+
+  const createUserCoupouns = async (pId) => {
+    const data = await contract.call('createUserCoupouns', pId,address);
+    return data;
+  }
+
+  const getUserCoupouns = async () => {
+    const coupouns = await contract.call('getUserCoupouns',address);
+    const parsedCoupouns = coupouns.map((coupoun, i) => ({
+      owner: coupoun.owner,
+      code: coupoun.code,
+      id: coupoun.id,
+      aId: coupoun.accessID,
+      pId: i,
+    }));
+
+    return parsedCoupouns;  
+  }
+
+  
 
   const getCampaigns = async () => {
     const campaigns = await contract.call('getCampaigns');
@@ -90,6 +152,11 @@ export const StateContextProvider = ({ children }) => {
         contract,
         connect,
         createCampaign: publishCampaign,
+        createCoupoun: publishCoupon,
+        getCoupounsByOwner,
+        getCoupounById,
+        createUserCoupouns,
+        getUserCoupouns,
         getCampaigns,
         getUserCampaigns,
         donate,

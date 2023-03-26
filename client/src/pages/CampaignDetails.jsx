@@ -10,27 +10,48 @@ import { thirdweb } from '../assets';
 const CampaignDetails = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
-  const { donate, getDonations, contract, address } = useStateContext();
+  const { donate, getDonations, contract, address,getCoupounById } = useStateContext();
 
   const [isLoading, setIsLoading] = useState(false);
   const [amount, setAmount] = useState('');
   const [donators, setDonators] = useState([]);
 
-  const remainingDays = daysLeft(state.deadline);
+  const remainingDays = daysLeft(state.campaign.deadline);
+
+  const [coupon1, setCoupoun1] = useState([]);
+  const [coupon2, setCoupoun2] = useState([]);
+  const [coupon3, setCoupoun3] = useState([]);
+  const [load, setLoad] = useState(false);
+  const fetchCoupouns = async () => {
+    const data1 = await getCoupounById(state.coupon[0]);
+    const data2 = await getCoupounById(state.coupon[1]);
+    const data3 = await getCoupounById(state.coupon[2]);
+    setCoupoun1(data1);
+    setCoupoun2(data2);
+    setCoupoun3(data3);
+  }
+  React.useEffect(() => {
+    setLoad(true);
+    fetchCoupouns();
+    console.log(coupon1, coupon2, coupon3);
+    setLoad(false);
+  }, [load]);
 
   const fetchDonators = async () => {
-    const data = await getDonations(state.pId);
+    const data = await getDonations(state.campaign.pId);
     setDonators(data);
   }
 
   useEffect(() => {
-    if(contract) fetchDonators();
+    if(contract) {
+      fetchDonators();
+    }
   }, [contract, address])
 
   const handleDonate = async () => {
     setIsLoading(true);
 
-    await donate(state.pId, amount); 
+    await donate(state.campaign.pId, amount); 
 
     navigate('/')
     setIsLoading(false);
@@ -42,16 +63,16 @@ const CampaignDetails = () => {
 
       <div className="w-full flex md:flex-row flex-col mt-10 gap-[30px]">
         <div className="flex-1 flex-col">
-          <img src={state.image} alt="campaign" className="w-full h-[410px] object-cover rounded-xl"/>
+          <img src={state.campaign.image} alt="campaign" className="w-full h-[410px] object-cover rounded-xl"/>
           <div className="relative w-full h-[5px] bg-[#3a3a43] mt-2">
-            <div className="absolute h-full bg-[#4acd8d]" style={{ width: `${calculateBarPercentage(state.target, state.amountCollected)}%`, maxWidth: '100%'}}>
+            <div className="absolute h-full bg-[#4acd8d]" style={{ width: `${calculateBarPercentage(state.campaign.target, state.amountCollected)}%`, maxWidth: '100%'}}>
             </div>
           </div>
         </div>
 
         <div className="flex md:w-[150px] w-full flex-wrap justify-between gap-[30px]">
           <CountBox title="Days Left" value={remainingDays} />
-          <CountBox title={`Raised of ${state.target}`} value={state.amountCollected} />
+          <CountBox title={`Raised of ${state.campaign.target}`} value={state.campaign.amountCollected} />
           <CountBox title="Total Backers" value={donators.length} />
         </div>
       </div>
@@ -66,7 +87,7 @@ const CampaignDetails = () => {
                 <img src={thirdweb} alt="user" className="w-[60%] h-[60%] object-contain"/>
               </div>
               <div>
-                <h4 className="font-epilogue font-semibold text-[14px] text-white break-all">{state.owner}</h4>
+                <h4 className="font-epilogue font-semibold text-[14px] text-white break-all">{state.campaign.owner}</h4>
                 <p className="mt-[4px] font-epilogue font-normal text-[12px] text-[#808191]">10 Campaigns</p>
               </div>
             </div>
@@ -74,9 +95,24 @@ const CampaignDetails = () => {
 
           <div>
             <h4 className="font-epilogue font-semibold text-[18px] text-white uppercase">Story</h4>
-
               <div className="mt-[20px]">
                 <p className="font-epilogue font-normal text-[16px] text-[#808191] leading-[26px] text-justify">{state.description}</p>
+              </div>
+              <h4 className="font-epilogue font-semibold text-[18px] text-white uppercase">Coupons</h4>
+              <div className="mt-[10px]">
+                <p className="font-epilogue font-normal text-[16px] text-white leading-[26px] text-justify">{coupon1.name}</p>
+                <p className="font-epilogue font-normal text-[14px] text-[#808191] leading-[26px] text-justify">{coupon1.description}</p>
+                <p className="font-epilogue font-normal text-[14px] text-[#808191] leading-[26px] text-justify">Expires in :{daysLeft(coupon1.deadline)}</p>
+              </div>
+              <div className="mt-[10px]">
+                <p className="font-epilogue font-normal text-[16px] text-white leading-[26px] text-justify">{coupon2.name}</p>
+                <p className="font-epilogue font-normal text-[14px] text-[#808191] leading-[26px] text-justify">{coupon2.description}</p>
+                <p className="font-epilogue font-normal text-[14px] text-[#808191] leading-[26px] text-justify">Expires in :{daysLeft(coupon2.deadline)}</p>
+              </div>
+              <div className="mt-[10px]">
+                <p className="font-epilogue font-normal text-[16px] text-white leading-[26px] text-justify">{coupon3.name}</p>
+                <p className="font-epilogue font-normal text-[14px] text-[#808191] leading-[26px] text-justify">{coupon3.description}</p>
+                <p className="font-epilogue font-normal text-[14px] text-[#808191] leading-[26px] text-justify">Expires in :{daysLeft(coupon3.deadline)}</p>
               </div>
           </div>
 
