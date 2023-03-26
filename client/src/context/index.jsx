@@ -7,7 +7,7 @@ import { EditionMetadataWithOwnerOutputSchema } from '@thirdweb-dev/sdk';
 const StateContext = createContext();
 
 export const StateContextProvider = ({ children }) => {
-  const { contract } = useContract('0x00828CAFF173ECe2c0ab56078799449Cb49e8E42');
+  const { contract } = useContract('0x33Fe7836d47ec6AD02C359FF9Dc9Fd380552E4F7');
   const { mutateAsync: createCampaign } = useContractWrite(contract, 'createCampaign');
   const { mutateAsync: createCoupoun } = useContractWrite(contract, 'createCoupoun');
 
@@ -55,6 +55,7 @@ export const StateContextProvider = ({ children }) => {
     const parsedCoupouns = coupouns.map((coupoun, i) => ({
       owner: coupoun.owner,
       name: coupoun.name,
+      id: coupoun.id,
       description: coupoun.description,
       deadline: coupoun.deadline.toNumber(),
       pId: i,
@@ -63,8 +64,8 @@ export const StateContextProvider = ({ children }) => {
     return parsedCoupouns;
   }
 
-  const getCoupounById = async (pId) => {
-    const coupoun = await contract.call('getCoupounById', pId);
+  const getCoupounById = async (id) => {
+    const coupoun = await contract.call('getCoupounById', id);
     const parsedCoupoun = {
       owner: coupoun.owner,
       name: coupoun.name,

@@ -61,7 +61,7 @@ const DisplayCoupons = () => {
     return (
       <div>
         <h1 className='text-white'>Your Coupons</h1>
-        {coupouns.map((coupoun) => <CouponCard coupoun={coupoun} />)}
+        {coupouns.map((coupoun) => <CouponCard coupoun={coupoun} key={coupoun.pId}/>)}
       </div>
     )
     }
@@ -76,7 +76,7 @@ const DisplayCoupons = () => {
                     <div className="text-[#3a3a43] text-[14px] font-medium">{coupoun.description}</div>
                 </div>
                 <div className="flex flex-col gap-[10px]">
-                    <div className="text-[#3a3a43] text-[14px] font-medium">Coupon ID: {coupoun.pId}</div>
+                    <div className="text-[#3a3a43] text-[14px] font-medium">Coupon ID: {coupoun.id.toNumber()}</div>
                 </div>
             </div>
         </div>

@@ -18,6 +18,7 @@ contract CrowdFunding {
 
     struct Coupoun{
         string name;
+        uint256 id;
         string description;
         uint256 deadline;
         address owner;
@@ -38,6 +39,7 @@ contract CrowdFunding {
     uint256 public numberOfCampaigns = 0;
     uint256 public numberOfCoupouns = 0;
     uint256 public numberOfUserCoupouns = 0;
+    uint256 public counter = 0;
 
     function createCampaign(address _owner, string memory _title, string memory _description,uint256 _coupoun1, uint256 _coupoun2,uint256 _coupoun3,uint256 _target, uint256 _deadline, string memory _image) public returns (uint256) {
         Campaign storage campaign = campaigns[numberOfCampaigns];
@@ -71,7 +73,7 @@ contract CrowdFunding {
         coupoun.deadline = _deadline;
         coupoun.owner = _owner;
         numberOfCoupouns++;
-
+        coupoun.id = numberOfCoupouns - 1;
         return numberOfCoupouns - 1;
     }
 
@@ -135,10 +137,11 @@ contract CrowdFunding {
         return allUserCoupouns;
     }
     
-    function randomString(uint length) public view returns (string memory) {
+    function randomString(uint length) public  returns (string memory) {
     bytes memory characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     bytes memory result = new bytes(length);
-    uint256 randomInt = uint256(keccak256(abi.encodePacked(block.timestamp, block.difficulty)));
+    counter ++ ; 
+    uint256 randomInt = uint256(keccak256(abi.encodePacked(block.timestamp, block.difficulty,counter,msg.sender)));
     for (uint i = 0; i < length; i++) {
         result[i] = characters[randomInt % characters.length];
         randomInt /= characters.length;
