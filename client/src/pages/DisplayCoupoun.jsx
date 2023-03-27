@@ -94,7 +94,6 @@ const DisplayCoupoun = () => {
  const CouponCard = ( {coupon ,data} ) => {
     //console.log(coupon,couponsdata[coupon.pId].name,couponsdata[coupon.pId].description)
     // console.log("here",coupon ,data[coupon.pId])
-    //sakdjlksajdlkjs
     try{
     const {name , description} = data[coupon.pId];
     return (
