@@ -83,7 +83,8 @@ export const StateContextProvider = ({ children }) => {
 
   const getUserCoupouns = async () => {
     const coupouns = await contract.call('getUserCoupouns',address);
-    const parsedCoupouns = coupouns.map((coupoun, i) => ({
+    const newCoupouns = coupouns.filter( data2 => data2.owner !== '0x0000000000000000000000000000000000000000');
+    const parsedCoupouns = newCoupouns.map((coupoun, i) => ({
       owner: coupoun.owner,
       code: coupoun.code,
       id: coupoun.id,

@@ -42,17 +42,18 @@ const DisplayCoupons = () => {
 
   const fetchCoupouns = async () => {
     const data = await getCoupounsByOwner();
-    setCoupouns(data);
+    setCoupouns(data.filter( data2 => data2.owner !== '0x0000000000000000000000000000000000000000'));
   }
 
   useEffect(() => {
     if(contract){
       setLoad(true);
       fetchCoupouns();
-      console.log("here",coupouns)
       setLoad(false);
     }
   }, [load,contract,address]);
+
+
   
   if(coupouns.length === 0){
     return <h1>no coupouns</h1>

@@ -35,7 +35,7 @@ const DisplayCoupoun = () => {
         try{
         setIsLoading(true);
         const data = await getUserCoupouns();
-        setCoupons(data);
+        setCoupons(data.filter( data2 => data2.owner !== '0x0000000000000000000000000000000000000000'));
         setIsLoading(false);
         }
         catch(err){
@@ -47,7 +47,7 @@ const DisplayCoupoun = () => {
     const getCoupoun= async () => {
         setIsLoading(true);
         for (let i = 0; i < coupons.length; i++) {
-            const coupon = await getCoupounById(coupons[i].aId.toNumber());
+            const coupon = await getCoupounById(coupons[i].id.toNumber());
             setCouponData((prevState)=>[...prevState, coupon]);
         }
         setIsLoading(false);
@@ -84,7 +84,7 @@ const DisplayCoupoun = () => {
         <div>
         {isLoading && <Loader />}
         <div className="flex flex-col gap-[20px]">
-            {coupons.map((coupon) => <CouponCard coupon={coupon} key={coupon.pId} data={couponsdata}/> ) }
+            {coupons.map((coupon) => <CouponCard coupon={coupon} key={coupon.id} data={couponsdata}/> ) }
         </div>
         </div>
     )
@@ -120,6 +120,7 @@ const DisplayCoupoun = () => {
     )
     }
     catch(err){
+        console.log(err)
         return(
             <h1>Loading</h1>
         )
@@ -129,6 +130,3 @@ const DisplayCoupoun = () => {
 
 
 export default DisplayCoupoun
-
-
-
