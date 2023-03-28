@@ -24,7 +24,7 @@ const Profile = () => {
   return (
     <div>
     <DisplayCampaigns 
-      title="All Campaigns"
+      title="My Campaigns"
       isLoading={isLoading}
       campaigns={campaigns}
     />
@@ -61,7 +61,7 @@ const DisplayCoupons = () => {
   else{
     return (
       <div>
-        <h1 className='text-white'>Your Coupons</h1>
+        <h1 className='font-epilogue font-semibold text-[18px] text-white text-left'>Your Coupons</h1>
         {coupouns.map((coupoun) => <CouponCard coupoun={coupoun} key={coupoun.pId}/>)}
       </div>
     )
@@ -70,17 +70,19 @@ const DisplayCoupons = () => {
 
  const CouponCard = ({coupoun}) => {
     return (
-        <div className="flex flex-col gap-[20px]">
-            <div className="flex flex-col gap-[20px]">
-                <div className="flex flex-col gap-[10px]">
-                    <div className="text-[#4acd8d] text-[18px] font-bold">{coupoun.name}</div>
-                    <div className="text-[#3a3a43] text-[14px] font-medium">{coupoun.description}</div>
-                </div>
-                <div className="flex flex-col gap-[10px]">
-                    <div className="text-[#3a3a43] text-[14px] font-medium">Coupon ID: {coupoun.id.toNumber()}</div>
-                </div>
-            </div>
+      
+      <div className="sm:w-[288px] w-full rounded-[15px] bg-[#1c1c24] cursor-pointer" >
+      <div className="flex flex-col p-4">
+        <div className="block">
+          <h3 className="font-epilogue font-semibold text-[20px] text-[#1dc071] text-left leading-[26px] truncate">{coupoun.name}</h3>
+          <p className="mt-[5px] font-epilogue font-normal text-[#808191] text-left leading-[18px] truncate">{coupoun.description}</p>
         </div>
+        <div className="block">
+          <h3 className="font-epilogue font-semibold text-[16px] text-white text-left leading-[26px] truncate">ID</h3>
+          <p className="mt-[5px] font-epilogue font-normal text-[#808191] text-left leading-[18px] truncate">{coupoun.id.toNumber()}</p>
+        </div>
+      </div>
+    </div>
     )
 }
 
