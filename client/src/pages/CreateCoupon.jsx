@@ -54,6 +54,7 @@ const CreateCoupon = () => {
                     <FormField
                         labelName="Description *"
                         placeholder="John Doe"
+                        isTextArea
                         inputType="text"
                         value={form.description}
                         handleChange={(e) => handleFormFieldChange('description', e)}
