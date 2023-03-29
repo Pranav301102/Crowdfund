@@ -51,13 +51,6 @@ const CreateCoupon = () => {
                         value={form.name}
                         handleChange={(e) => handleFormFieldChange('name', e)}
                     />
-                    <FormField
-                        labelName="Description *"
-                        placeholder="John Doe"
-                        inputType="text"
-                        value={form.description}
-                        handleChange={(e) => handleFormFieldChange('description', e)}
-                    />
                     <FormField 
                         labelName="End Date *"
                         placeholder="End Date"
@@ -65,6 +58,16 @@ const CreateCoupon = () => {
                         value={form.deadline}
                          handleChange={(e) => handleFormFieldChange('deadline', e)}
                     />
+                </div>
+                <div>
+                <FormField
+                        labelName="Description *"
+                        placeholder="John Doe"
+                        isTextArea
+                        inputType="text"
+                        value={form.description}
+                        handleChange={(e) => handleFormFieldChange('description', e)}
+                />
                 </div>
                 <div className="flex justify-center items-center">
                 <CustomButton 
