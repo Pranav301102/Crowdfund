@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 
 import { DisplayCampaigns } from '../components';
 import { useStateContext } from '../context'
+import LandingPage from './LandingPage';
 
 const Home = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -21,11 +22,14 @@ const Home = () => {
   }, [address, contract]);
 
   return (
+    <>
+    <LandingPage/>
     <DisplayCampaigns 
       title="All Campaigns"
       isLoading={isLoading}
       campaigns={campaigns}
     />
+    </>
   )
 }
 
