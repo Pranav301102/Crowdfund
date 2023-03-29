@@ -5,10 +5,18 @@ import { Sidebar, Navbar } from './components';
 import { CampaignDetails, CreateCampaign, Home, Profile } from './pages';
 import CreateCoupon from './pages/CreateCoupon';
 import DisplayCoupoun from './pages/DisplayCoupoun';
+import { Gradient } from './components/Gradient';
+import { useLayoutEffect } from 'react';
+
 
 const App = () => {
+  useLayoutEffect(() => {
+    const gradient = new Gradient()
+    gradient.initGradient('#gradient-canvas')
+  }, [])
   return (
-    <div className="relative sm:-8 p-4 bg-[#13131a] min-h-screen flex flex-row">
+    <div className="relative sm:-8 p-4  min-h-screen flex flex-row">
+         <canvas id="gradient-canvas" className="absolute top-0 left-0 w-full h-full z-[-1]" />
       <div className="sm:flex hidden mr-10 relative">
         <Sidebar />
       </div>
