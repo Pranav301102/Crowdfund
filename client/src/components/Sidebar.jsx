@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { logo, sun } from '../assets';
 import { navlinks } from '../constants';
 
-import Model from './Canvas';
+
 
 const Icon = ({ styles, name, imgUrl, isActive, disabled, handleClick }) => (
   <div className={`w-[48px] h-[48px] rounded-[10px] ${isActive && isActive === name && 'bg-[#2c2f32]'} flex justify-center items-center ${!disabled && 'cursor-pointer'} ${styles}`} onClick={handleClick}>
@@ -25,7 +25,7 @@ const Sidebar = () => {
       <Link to="/">
         {/* <Icon styles="w-[52px] h-[52px] bg-[#2c2f32]" imgUrl={logo} /> */}
         <div className='w-[62px] h-[62px] bg-[#2c2f32] rounded-[10px]'>
-          <Model/>
+          {/* <Model/> */}
         </div>
       </Link>
 
