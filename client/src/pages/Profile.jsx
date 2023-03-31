@@ -61,9 +61,9 @@ const DisplayCoupons = () => {
   else{
     return (
       <div>
-        <h1 className='font-epilogue font-semibold text-[18px] text-white text-left'>Your Coupons</h1>
-        {coupouns.map((coupoun) => <CouponCard coupoun={coupoun} key={coupoun.pId}/>)}
-      </div>
+        <h1 className='font-epilogue font-semibold text-[18px] text-white text-left'>Your Coupons</h1> 
+        <div className="flex flex-wrap mt-[20px] gap-[26px]">{coupouns.map((coupoun) => <CouponCard coupoun={coupoun} key={coupoun.pId}/>)}
+      </div></div>
     )
     }
   }
