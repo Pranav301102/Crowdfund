@@ -81,9 +81,9 @@ const DisplayCoupoun = () => {
 
 
     return (
-        <div>
+        <div >
             {isLoading && <Loader />}
-            <div className="flex flex-col gap-[20px]">
+            <div className="flex flex-wrap gap-[20px]">
                 {coupons.map((coupon) => <CouponCard coupon={coupon} key={coupon.id} data={couponsdata} />)}
             </div>
         </div>

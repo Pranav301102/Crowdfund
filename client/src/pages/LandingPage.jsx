@@ -18,7 +18,7 @@ const LandingPage = () => {
     </Content>
   </ContentContainer>
   <CanvasContainer>
-    <Canvas />
+    <Canvas resolution={0.30}/>
   </CanvasContainer>
   </Main>
   )
