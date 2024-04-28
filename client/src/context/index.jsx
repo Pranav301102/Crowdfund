@@ -1,22 +1,23 @@
 import React, { useContext, createContext } from 'react';
-
-import { useAddress, useContract, useMetamask, useContractWrite } from '@thirdweb-dev/react';
+import { useAddress, useMetamask, useContractWrite,useContractRead,useContract} from '@thirdweb-dev/react';
 import { ethers } from 'ethers';
-import { EditionMetadataWithOwnerOutputSchema } from '@thirdweb-dev/sdk';
+
 
 const StateContext = createContext();
 
 export const StateContextProvider = ({ children }) => {
-  const { contract } = useContract('0x33Fe7836d47ec6AD02C359FF9Dc9Fd380552E4F7');
+  const { contract } = useContract("0x156199B90f49d04af983A8C3FEf24eb8C130001F");
   const { mutateAsync: createCampaign } = useContractWrite(contract, 'createCampaign');
   const { mutateAsync: createCoupoun } = useContractWrite(contract, 'createCoupoun');
+  
 
   const address = useAddress();
   const connect = useMetamask();
 
+
   const publishCampaign = async (form) => {
     try {
-      const data = await createCampaign([
+      const data = await createCampaign({args:[
         address, // owner
         form.title, // title
         form.description, // description
@@ -26,7 +27,7 @@ export const StateContextProvider = ({ children }) => {
         form.target,
         new Date(form.deadline).getTime(), // deadline,
         form.image
-      ])
+      ]})
 
       console.log("contract call success", data)
     } catch (error) {
@@ -36,12 +37,14 @@ export const StateContextProvider = ({ children }) => {
 
   const publishCoupon = async (form) => {
     try {
-      const data = await createCoupoun([
+      const data = await createCoupoun({args:[
         address, // owner
         form.name, // title
         form.description, // description
-        new Date(form.deadline).getTime(), // deadline,
-      ])
+        new Date(form.deadline).getTime(),
+       ]} // deadline,
+      )
+
 
       return data;
     } catch (error) {
@@ -51,7 +54,8 @@ export const StateContextProvider = ({ children }) => {
   }
 
   const getCoupounsByOwner = async () => {
-    const coupouns = await contract.call('getCoupounsByOwner', address);
+    console.log("address", [address])
+    const coupouns = await contract.call('getCoupounsByOwner', [address]);
     const parsedCoupouns = coupouns.map((coupoun, i) => ({
       owner: coupoun.owner,
       name: coupoun.name,
@@ -65,24 +69,30 @@ export const StateContextProvider = ({ children }) => {
   }
 
   const getCoupounById = async (id) => {
-    const coupoun = await contract.call('getCoupounById', id);
+    console.log("id", id)
+    try{
+    const coupoun = await contract.call('getCoupounById', [id]);
     const parsedCoupoun = {
       owner: coupoun.owner,
       name: coupoun.name,
       description: coupoun.description,
       deadline: coupoun.deadline.toNumber(),
+      
     };
-    
     return parsedCoupoun;
+  }catch (error) {
+      console.log("contract call failure", error)
+    }
+   
   }
 
   const createUserCoupouns = async (pId) => {
-    const data = await contract.call('createUserCoupouns', pId,address);
+    const data = await contract.call('createUserCoupouns', [pId,address]);
     return data;
   }
 
   const getUserCoupouns = async () => {
-    const coupouns = await contract.call('getUserCoupouns',address);
+    const coupouns = await contract.call('getUserCoupouns',[address]);
     const newCoupouns = coupouns.filter( data2 => data2.owner !== '0x0000000000000000000000000000000000000000');
     const parsedCoupouns = newCoupouns.map((coupoun, i) => ({
       owner: coupoun.owner,
@@ -94,6 +104,7 @@ export const StateContextProvider = ({ children }) => {
 
     return parsedCoupouns;  
   }
+
 
   
 
@@ -125,13 +136,13 @@ export const StateContextProvider = ({ children }) => {
   }
 
   const donate = async (pId, amount) => {
-    const data = await contract.call('donateToCampaign', pId, { value: ethers.utils.parseEther(amount)});
+    const data = await contract.call('donateToCampaign', [pId], { value: ethers.utils.parseEther(amount)});
 
     return data;
   }
 
   const getDonations = async (pId) => {
-    const donations = await contract.call('getDonators', pId);
+    const donations = await contract.call('getDonators', [pId]);
     const numberOfDonations = donations[0].length;
 
     const parsedDonations = [];

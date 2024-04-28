@@ -8,6 +8,18 @@ export default defineConfig({
     global: "globalThis",
     "process.env": {},
   },
+  optimizeDeps: { // 👈 optimizedeps
+    esbuildOptions: {
+      target: "esnext", 
+      // Node.js global to browser globalThis
+      define: {
+        global: 'globalThis'
+      },
+      supported: { 
+        bigint: true 
+      },
+    }
+  }, 
   resolve: {
     alias: {
       web3: 'web3/dist/web3.min.js',
